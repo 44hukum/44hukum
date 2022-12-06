@@ -1,3 +1,1 @@
-- 👋 Hi, I’m @44hukum
-- 👀 I’m interested in building ideas
-
+## It is what it is
