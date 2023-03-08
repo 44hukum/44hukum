@@ -14,7 +14,7 @@ function Cylinder3d(props){
     onPointerOver={(event) => hover(true)}
     onPointerOut={(event) => hover(false)}
     > 
-      <cylinderGeometry args={[1,1,1]} />
+      <cylinderGeometry args={[2,2,2]} />
       <meshStandardMaterial wireframe={props.wireframe} color={hovered ? "hotpink": "orange"} />
     </mesh>
   );
@@ -25,10 +25,10 @@ function App() {
       <Canvas>
       <ambientLight />
         	<pointLight position={[10, 10, 10]} />
-        <Cylinder3d position={[-1.2, 0, 0]}/>
-        <Cylinder3d position={[1.2, 0, 0]}/>
-        <Cylinder3d position={[1.4, 0, 0]}/>
-        <Cylinder3d position={[-1.4, 0, 0]}/>
+        <Cylinder3d position={[-1.2, 1, 0]}/>
+        <Cylinder3d position={[1.2, 1, 0]}/>
+        <Cylinder3d position={[1.4, 1, 0]}/>
+        <Cylinder3d position={[-1.4, 1, 0]}/>
 
 
         <Cylinder3d position={[-2.2, 0, 0]}/>
