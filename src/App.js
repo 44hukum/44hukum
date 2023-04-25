@@ -1,48 +1,100 @@
-import React, {useRef, useState} from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei/core/OrbitControls";
 
-function Cylinder3d(props){
-  const ref = useRef();
-  const [hovered, hover]=useState(false)
-  const [clicked, click] = useState(false)
+import React, { Suspense, useEffect, useRef } from "react";
+import { useGLTF, useAnimations } from "@react-three/drei";
 
-  useFrame((state, delta)=> (ref.current.rotation.x += 0.01))
+function Model(props) {
+  const group = useRef();
+  const { nodes, materials, animations } = useGLTF("/test.glb");
+  const { actions } = useAnimations(animations, group);
 
+  useEffect(() => {
+    actions.move.play();
+  });
   return (
-    <mesh {...props} ref={ref} scale={clicked ? 1.5:1}
-    onClick={(event) => hover(true)}
-    onPointerOver={(event) => hover(true)}
-    onPointerOut={(event) => hover(false)}
-    > 
-      <cylinderGeometry args={[2,2,2]} />
-      <meshStandardMaterial wireframe={props.wireframe} color={hovered ? "hotpink": "orange"} />
-    </mesh>
+    <group ref={group} {...props} dispose={null}>
+      <group name="Scene">
+        <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.04}>
+          <primitive object={nodes.mixamorigHips} />
+          <skinnedMesh
+            name="LP_Eyes_ring"
+            geometry={nodes.LP_Eyes_ring.geometry}
+            material={materials.Demon_MAT}
+            skeleton={nodes.LP_Eyes_ring.skeleton}
+          />
+          <skinnedMesh
+            name="LP_lower_armor_horns"
+            geometry={nodes.LP_lower_armor_horns.geometry}
+            material={materials.Demon_MAT}
+            skeleton={nodes.LP_lower_armor_horns.skeleton}
+          />
+          <skinnedMesh
+            name="LP_Lower_shoes"
+            geometry={nodes.LP_Lower_shoes.geometry}
+            material={materials.Demon_MAT}
+            skeleton={nodes.LP_Lower_shoes.skeleton}
+          />
+          <skinnedMesh
+            name="LP_shoulder1"
+            geometry={nodes.LP_shoulder1.geometry}
+            material={materials.Demon_MAT}
+            skeleton={nodes.LP_shoulder1.skeleton}
+          />
+          <skinnedMesh
+            name="LP_shoulder2"
+            geometry={nodes.LP_shoulder2.geometry}
+            material={materials.Demon_MAT}
+            skeleton={nodes.LP_shoulder2.skeleton}
+          />
+          <skinnedMesh
+            name="LP_shoulder_rings"
+            geometry={nodes.LP_shoulder_rings.geometry}
+            material={materials.Demon_MAT}
+            skeleton={nodes.LP_shoulder_rings.skeleton}
+          />
+          <skinnedMesh
+            name="LP_Upper_body"
+            geometry={nodes.LP_Upper_body.geometry}
+            material={materials.Demon_MAT}
+            skeleton={nodes.LP_Upper_body.skeleton}
+          />
+          <skinnedMesh
+            name="LP_upper_cloth"
+            geometry={nodes.LP_upper_cloth.geometry}
+            material={materials.Demon_MAT}
+            skeleton={nodes.LP_upper_cloth.skeleton}
+          />
+        </group>
+      </group>
+    </group>
   );
 }
+
+useGLTF.preload("/test.glb");
+
 function App() {
   return (
-    <>
+    <div
+      id="app"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "80vh",
+      }}
+    >
+      <h1 style={{color: "white"}}> Life is Hard, keep learning</h1>
       <Canvas>
-      <ambientLight />
-        	<pointLight position={[10, 10, 10]} />
-        <Cylinder3d position={[-1.2, 1, 0]}/>
-        <Cylinder3d position={[1.2, 1, 0]}/>
-        <Cylinder3d position={[1.4, 1, 0]}/>
-        <Cylinder3d position={[-1.4, 1, 0]}/>
-
-
-        <Cylinder3d position={[-2.2, 0, 0]}/>
-        <Cylinder3d position={[2.2, 0, 0]}/>
-        <Cylinder3d position={[2.4, 0, 0]}/>
-        <Cylinder3d position={[-2.4, 0, 0]}/>
+        <OrbitControls />
+        <directionalLight intensity={0.5} />
+        <ambientLight intensity={0.5} />
+        <Suspense fallback={null}>
+          <Model />
+        </Suspense>
       </Canvas>
-
-      <h1 style={{'color':'white'}}>
-      Hello world
-
-      </h1>
-    </>
-    );
+    </div>
+  );
 }
 
 export default App;
