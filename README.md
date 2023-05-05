@@ -1,1 +1,1 @@
-# it is what it is
+# it's not about what you know, it's about what you can do
